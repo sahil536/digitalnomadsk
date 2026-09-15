@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Nexa — Intelligent digital systems',
+  title: 'DigitalNomadsk — Intelligent digital systems',
   description: 'Agentic applications, AI systems and security engineering.'
 };
 
