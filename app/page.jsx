@@ -293,7 +293,7 @@ export default function Home() {
           AI · Digital Products · ML · Cyber Security
         </p>
 
-        <span>© 2026 Digital Nomadsk</span>
+        <span>© 2026 Digital Nomadsk |Hong Kong</span>
       </footer>
 
     </main>
