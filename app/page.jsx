@@ -1,4 +1,7 @@
+"use client";
+
 import "./globals.css";
+import { useState } from "react";
 
 const services = [
   {
@@ -44,15 +47,28 @@ const services = [
 ];
 
 export default function Home() {
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const [scopeOpen, setScopeOpen] = useState(false);
+  const [projectScope, setProjectScope] = useState("AI & Intelligent Systems");
+
+  const projectScopes = [
+    "AI & Intelligent Systems",
+    "Digital Products",
+    "ML Systems",
+    "Cyber Security",
+    "Strategic Technology Advisory",
+  ];
+
   return (
     <main className="site">
-
-      {/* NAVIGATION */}
       <nav className="navbar">
-        <div className="brand">
+        <a href="#top" className="brand">
           <span className="brand-mark">D</span>
-          <span>Digital<span>Nomadsk</span></span>
-        </div>
+          <span>
+            Digital<span>Nomadsk</span>
+            <small>PRIVATE DIGITAL ENGINEERING STUDIO</small>
+          </span>
+        </a>
 
         <div className="nav-links">
           <a href="#services">What we do</a>
@@ -62,27 +78,32 @@ export default function Home() {
 
         <div className="nav-actions">
           <a href="#contact" className="login-link">
-            Let's talk
+            Let&apos;s talk
           </a>
-          <a href="#contact" className="nav-button">
+          <button
+            type="button"
+            className="nav-button"
+            onClick={() => setProjectModalOpen(true)}
+          >
             Start a project
             <span>↗</span>
-          </a>
+          </button>
+          <button className="mobile-menu" aria-label="Open navigation">☰</button>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="hero">
-
+      <section className="hero" id="top">
         <div className="hero-orbit orbit-one" />
         <div className="hero-orbit orbit-two" />
+        <div className="hero-grain" />
 
         <div className="hero-content">
-
           <div className="eyebrow">
             <span className="eyebrow-dot" />
             DIGITAL ENGINEERING STUDIO
           </div>
+
+          <div className="hero-kicker">01 — DIGITAL TRANSFORMATION / PRIVATE PARTNERSHIP</div>
 
           <h1>
             We build the
@@ -103,19 +124,24 @@ export default function Home() {
               Book a conversation
               <span>↗</span>
             </a>
-
             <a href="#services" className="secondary-button">
               Explore our work
               <span>↓</span>
             </a>
           </div>
+
+          <div className="hero-footerline">
+            <span>STRATEGY · ENGINEERING · INTELLIGENCE</span>
+            <span>EST. 2026</span>
+          </div>
         </div>
 
-        {/* FLOATING INFO */}
         <div className="hero-card hero-card-left">
           <span>01</span>
-          <strong>AI-FIRST</strong>
-          <small>Engineering</small>
+          <div>
+            <strong>AI-FIRST</strong>
+            <small>Engineering</small>
+          </div>
         </div>
 
         <div className="hero-card hero-card-right">
@@ -132,7 +158,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* INTRO */}
       <section className="intro" id="about">
         <div className="intro-label">
           <span>01</span>
@@ -155,12 +180,15 @@ export default function Home() {
             intelligent automation to production-grade platforms, we bring
             strategy and technology together.
           </p>
+
+          <div className="intro-rule">
+            <span>PRIVATE TECHNOLOGY PARTNERSHIP</span>
+            <span>01 / 04</span>
+          </div>
         </div>
       </section>
 
-      {/* SERVICES */}
       <section className="services" id="services">
-
         <div className="services-header">
           <div>
             <span className="section-label">02 / OUR SERVICES</span>
@@ -185,19 +213,12 @@ export default function Home() {
             >
               <div className="card-top">
                 <span className="card-number">{service.number}</span>
-
-                <div className="service-icon">
-                  {service.icon}
-                </div>
+                <div className="service-icon">{service.icon}</div>
               </div>
 
               <div className="card-body">
-                <span className="service-tag">
-                  {service.tag}
-                </span>
-
+                <span className="service-tag">{service.tag}</span>
                 <h3>{service.title}</h3>
-
                 <p>{service.description}</p>
               </div>
 
@@ -210,9 +231,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURE */}
       <section className="feature" id="work">
-
         <div className="feature-number">03</div>
 
         <div className="feature-content">
@@ -225,7 +244,7 @@ export default function Home() {
           </h2>
 
           <p>
-            Great technology isn't about adding complexity. It's about
+            Great technology isn&apos;t about adding complexity. It&apos;s about
             removing it. We combine product thinking, engineering discipline
             and emerging AI capabilities to build systems that actually work.
           </p>
@@ -236,19 +255,16 @@ export default function Home() {
               <strong>Understand</strong>
               <p>We uncover the real problem before writing the first line of code.</p>
             </div>
-
             <div>
               <span>02</span>
               <strong>Design</strong>
               <p>We turn complex requirements into clear digital experiences.</p>
             </div>
-
             <div>
               <span>03</span>
               <strong>Engineer</strong>
               <p>We build scalable, maintainable and production-ready systems.</p>
             </div>
-
             <div>
               <span>04</span>
               <strong>Evolve</strong>
@@ -258,22 +274,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="cta" id="contact">
+        <div className="cta-glow cta-glow-one" />
+        <div className="cta-glow cta-glow-two" />
 
-        <div className="cta-glow" />
-
-        <span className="section-label">04 / LET'S BUILD</span>
+        <span className="section-label">04 / LET&apos;S BUILD</span>
 
         <h2>
           Have an idea?
           <br />
-          <span>Let's make it real.</span>
+          <span>Let&apos;s make it real.</span>
         </h2>
 
         <p>
-          Tell us what you're building, what you're solving or where you're
-          stuck. We'll figure out the next step together.
+          Tell us what you&apos;re building, what you&apos;re solving or where you&apos;re
+          stuck. We&apos;ll figure out the next step together.
         </p>
 
         <a href="mailto:admin@digitalnomadsk.com" className="cta-button">
@@ -282,20 +297,139 @@ export default function Home() {
         </a>
       </section>
 
-      {/* FOOTER */}
+
+      {/* PRIVATE PROJECT CONSULTATION MODAL */}
+      {projectModalOpen && (
+        <div
+          className="project-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-modal-title"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setProjectModalOpen(false);
+            }
+          }}
+        >
+          <div className="project-modal">
+            <button
+              type="button"
+              className="project-modal-close"
+              aria-label="Close consultation"
+              onClick={() => setProjectModalOpen(false)}
+            >
+              ×
+            </button>
+
+            <div className="project-modal-seal">
+              <span>A</span>
+            </div>
+
+            <div className="project-modal-label">CONFIDENTIAL ADVISORY</div>
+
+            <h2 id="project-modal-title">
+              Start a Private
+              <br />
+              <em>Project.</em>
+            </h2>
+
+            <p className="project-modal-intro">
+              Share only what you are comfortable disclosing. A senior advisor
+              will respond directly.
+            </p>
+
+            <form
+              className="project-modal-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                setProjectModalOpen(false);
+              }}
+            >
+              <label>
+                Your Full Name
+                <input required placeholder="Your full name" />
+              </label>
+
+              <div className="project-modal-row">
+                <label>
+                  Mobile
+                  <input required placeholder="+1 000 000 0000" />
+                </label>
+
+                <label>
+                  Email
+                  <input
+                    required
+                    type="email"
+                    placeholder="principal@example.com"
+                  />
+                </label>
+              </div>
+
+              <label className="project-scope-field">
+                Project Scope
+                <div className={`project-scope ${scopeOpen ? "is-open" : ""}`}>
+                  <button
+                    type="button"
+                    className="project-scope-trigger"
+                    aria-haspopup="listbox"
+                    aria-expanded={scopeOpen}
+                    onClick={() => setScopeOpen((open) => !open)}
+                  >
+                    <span>{projectScope}</span>
+                    <span className="project-scope-chevron">⌄</span>
+                  </button>
+
+                  {scopeOpen && (
+                    <div className="project-scope-menu" role="listbox" aria-label="Project Scope">
+                      {projectScopes.map((scope) => (
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={projectScope === scope}
+                          className={`project-scope-option ${projectScope === scope ? "selected" : ""}`}
+                          key={scope}
+                          onClick={() => {
+                            setProjectScope(scope);
+                            setScopeOpen(false);
+                          }}
+                        >
+                          <span>{scope}</span>
+                          {projectScope === scope && <span>✓</span>}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <input type="hidden" name="projectScope" value={projectScope} />
+              </label>
+
+              <label className="project-modal-consent">
+                <input type="checkbox" required />
+                <span>
+                  I acknowledge the confidential nature of this request.
+                </span>
+              </label>
+
+              <button type="submit" className="project-modal-submit">
+                CONFIRM REQUEST
+                <span>→</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <footer>
         <div className="footer-brand">
           <span className="brand-mark">D</span>
           Digital<span>Nomadsk</span>
         </div>
 
-        <p>
-          AI · Digital Products · ML · Cyber Security
-        </p>
+        <p>AI · Digital Products · ML · Cyber Security</p>
 
         <span>© 2026 Digital Nomadsk |Hong Kong</span>
       </footer>
-
     </main>
   );
 }
