@@ -47,9 +47,14 @@ const services = [
 ];
 
 export default function Home() {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const [scopeOpen, setScopeOpen] = useState(false);
-  const [projectScope, setProjectScope] = useState("AI & Intelligent Systems");
+const [projectModalOpen, setProjectModalOpen] = useState(false);
+const [scopeOpen, setScopeOpen] = useState(false);
+const [projectScope, setProjectScope] = useState(
+  "AI & Intelligent Systems"
+);
+
+const [formSubmitting, setFormSubmitting] = useState(false);
+const [formMessage, setFormMessage] = useState("");
 
   const projectScopes = [
     "AI & Intelligent Systems",
@@ -339,83 +344,238 @@ export default function Home() {
             </p>
 
             <form
-              className="project-modal-form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                setProjectModalOpen(false);
+  className="project-modal-form"
+  onSubmit={async (event) => {
+    event.preventDefault();
+
+    // IMPORTANT:
+    // Capture the form before await.
+    const form = event.currentTarget;
+
+    setFormSubmitting(true);
+    setFormMessage("");
+
+    const formData = new FormData(form);
+
+    const data = {
+      fullName: formData.get("fullName"),
+      mobile: formData.get("mobile"),
+      email: formData.get("email"),
+      projectScope: formData.get("projectScope"),
+      message: formData.get("message"),
+      consent: formData.get("consent") === "on",
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Something went wrong."
+        );
+      }
+
+      setFormMessage(
+        "Your request has been received successfully."
+      );
+
+      // IMPORTANT:
+      // Use captured form instead of event.currentTarget
+      form.reset();
+
+      setProjectScope("AI & Intelligent Systems");
+      setScopeOpen(false);
+
+      setTimeout(() => {
+        setProjectModalOpen(false);
+        setFormMessage("");
+      }, 1800);
+
+    } catch (error) {
+      console.error("Form submission error:", error);
+
+      setFormMessage(
+        "Unable to submit your request. Please try again."
+      );
+    } finally {
+      setFormSubmitting(false);
+    }
+  }}
+>
+  {/* FULL NAME */}
+  <label>
+    Your Full Name
+
+    <input
+      required
+      name="fullName"
+      placeholder="Your full name"
+      autoComplete="name"
+    />
+  </label>
+
+
+  {/* MOBILE + EMAIL */}
+  <div className="project-modal-row">
+    <label>
+      Mobile
+
+      <input
+        required
+        name="mobile"
+        type="tel"
+        placeholder="+91 00000 00000"
+        autoComplete="tel"
+      />
+    </label>
+
+    <label>
+      Email
+
+      <input
+        required
+        name="email"
+        type="email"
+        placeholder="principal@example.com"
+        autoComplete="email"
+      />
+    </label>
+  </div>
+
+
+  {/* PROJECT SCOPE */}
+  <label className="project-scope-field">
+    Project Scope
+
+    <div
+      className={`project-scope ${
+        scopeOpen ? "is-open" : ""
+      }`}
+    >
+      <button
+        type="button"
+        className="project-scope-trigger"
+        aria-haspopup="listbox"
+        aria-expanded={scopeOpen}
+        onClick={() =>
+          setScopeOpen((open) => !open)
+        }
+      >
+        <span>{projectScope}</span>
+
+        <span className="project-scope-chevron">
+          ⌄
+        </span>
+      </button>
+
+      {scopeOpen && (
+        <div
+          className="project-scope-menu"
+          role="listbox"
+          aria-label="Project Scope"
+        >
+          {projectScopes.map((scope) => (
+            <button
+              type="button"
+              role="option"
+              aria-selected={
+                projectScope === scope
+              }
+              className={`project-scope-option ${
+                projectScope === scope
+                  ? "selected"
+                  : ""
+              }`}
+              key={scope}
+              onClick={() => {
+                setProjectScope(scope);
+                setScopeOpen(false);
               }}
             >
-              <label>
-                Your Full Name
-                <input required placeholder="Your full name" />
-              </label>
+              <span>{scope}</span>
 
-              <div className="project-modal-row">
-                <label>
-                  Mobile
-                  <input required placeholder="+1 000 000 0000" />
-                </label>
+              {projectScope === scope && (
+                <span>✓</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
 
-                <label>
-                  Email
-                  <input
-                    required
-                    type="email"
-                    placeholder="principal@example.com"
-                  />
-                </label>
-              </div>
+    <input
+      type="hidden"
+      name="projectScope"
+      value={projectScope}
+    />
+  </label>
 
-              <label className="project-scope-field">
-                Project Scope
-                <div className={`project-scope ${scopeOpen ? "is-open" : ""}`}>
-                  <button
-                    type="button"
-                    className="project-scope-trigger"
-                    aria-haspopup="listbox"
-                    aria-expanded={scopeOpen}
-                    onClick={() => setScopeOpen((open) => !open)}
-                  >
-                    <span>{projectScope}</span>
-                    <span className="project-scope-chevron">⌄</span>
-                  </button>
 
-                  {scopeOpen && (
-                    <div className="project-scope-menu" role="listbox" aria-label="Project Scope">
-                      {projectScopes.map((scope) => (
-                        <button
-                          type="button"
-                          role="option"
-                          aria-selected={projectScope === scope}
-                          className={`project-scope-option ${projectScope === scope ? "selected" : ""}`}
-                          key={scope}
-                          onClick={() => {
-                            setProjectScope(scope);
-                            setScopeOpen(false);
-                          }}
-                        >
-                          <span>{scope}</span>
-                          {projectScope === scope && <span>✓</span>}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <input type="hidden" name="projectScope" value={projectScope} />
-              </label>
+  {/* PROJECT DETAILS */}
+<label className="project-message-field">
+  Project Details
 
-              <label className="project-modal-consent">
-                <input type="checkbox" required />
-                <span>
-                  I acknowledge the confidential nature of this request.
-                </span>
-              </label>
+  <textarea
+    name="message"
+    placeholder="Tell us about your project, goals, requirements or challenges..."
+    rows={5}
+    maxLength={2000}
+  />
+</label>
 
-              <button type="submit" className="project-modal-submit">
-                CONFIRM REQUEST
-                <span>→</span>
-              </button>
-            </form>
+
+  {/* CONSENT */}
+  <label className="project-modal-consent">
+    <input
+      type="checkbox"
+      name="consent"
+      required
+    />
+
+    <span>
+      I acknowledge the confidential nature
+      of this request.
+    </span>
+  </label>
+
+
+  {/* SUCCESS / ERROR MESSAGE */}
+  {formMessage && (
+    <div
+      className={
+        formMessage.includes("received")
+          ? "form-success"
+          : "form-error"
+      }
+    >
+      {formMessage}
+    </div>
+  )}
+
+
+  {/* SUBMIT */}
+  <button
+    type="submit"
+    className="project-modal-submit"
+    disabled={formSubmitting}
+  >
+    {formSubmitting
+      ? "SUBMITTING..."
+      : "CONFIRM REQUEST"}
+
+    {!formSubmitting && (
+      <span>→</span>
+    )}
+  </button>
+</form>
           </div>
         </div>
       )}
