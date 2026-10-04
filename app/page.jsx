@@ -125,10 +125,14 @@ const [formMessage, setFormMessage] = useState("");
           </p>
 
           <div className="hero-buttons">
-            <a href="#contact" className="primary-button">
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => setProjectModalOpen(true)}
+            >
               Book a conversation
               <span>↗</span>
-            </a>
+            </button>
             <a href="#services" className="secondary-button">
               Explore our work
               <span>↓</span>
@@ -296,10 +300,14 @@ const [formMessage, setFormMessage] = useState("");
           stuck. We&apos;ll figure out the next step together.
         </p>
 
-        <a href="mailto:admin@digitalnomadsk.com" className="cta-button">
+        <button
+          type="button"
+          className="cta-button"
+          onClick={() => setProjectModalOpen(true)}
+        >
           Start a conversation
           <span>↗</span>
-        </a>
+        </button>
       </section>
 
 
