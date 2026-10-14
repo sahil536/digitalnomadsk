@@ -90,7 +90,7 @@ const [formMessage, setFormMessage] = useState("");
             className="nav-button"
             onClick={() => setProjectModalOpen(true)}
           >
-            Start a project
+            Consult For Projects
             <span>↗</span>
           </button>
           <button className="mobile-menu" aria-label="Open navigation">☰</button>
